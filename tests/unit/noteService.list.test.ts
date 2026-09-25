@@ -17,6 +17,6 @@ describe('NoteService - listNote (Ejercicio 2)', () => {
         const notas = service.listNotes();
 
         // Assert: Forzamos el error a propósito para el commit rojo
-        expect(notas.length).toBe(99); 
+        expect(notas.length).toBe(0); 
     });
 });
