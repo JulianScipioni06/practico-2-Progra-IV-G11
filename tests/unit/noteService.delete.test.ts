@@ -16,7 +16,7 @@ describe('NoteService - deleteNote (Ejercicio 5)', () => {
         const note = service.createNote({ title: 'Comprar pan', content: 'Antes de las 20hs' });
         const resultado = service.deleteNote(note.id);
 
-        expect(resultado).tobe(true);
+        expect(resultado).toBe(true);
         expect(service.listNotes()).toHaveLength(0);
     });
 
