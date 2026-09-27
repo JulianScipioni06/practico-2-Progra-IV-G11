@@ -2,6 +2,42 @@ import {describe, it, expect, beforeEach} from 'vitest';
 import request from 'supertest';
 import { makeApp } from '../../src/app';
 
+describe('Integracion: GET /notes/:id (ejercicio 3)', () => {
+    let app: any;
+
+    beforeEach(() => {
+        app = makeApp(':memory:');
+    });
+
+    it('devuelve código 200 y la nota si el id existe', async () => {
+        // 1. Creamos la nota con POST
+        const resPost = await request(app)
+            .post('/notes')
+            .send({
+                title: 'Nota de integración',
+                content: 'Probando GET por ID',
+                pinned: false
+            });
+
+        const notaId = resPost.body.id;
+
+        // 2. Consultamos la nota con GET
+        const resGet = await request(app).get(`/notes/${notaId}`);
+
+        expect(resGet.status).toBe(200);
+        expect(resGet.body.id).toBe(notaId);
+        expect(resGet.body.title).toBe('Nota de integración');
+        expect(resGet.body.content).toBe('Probando GET por ID');
+        expect(resGet.body.pinned).toBe(false);
+    });
+
+    it('devuelve código 404 si la nota no existe', async () => {
+        const resGet = await request(app).get('/notes/999');
+
+        expect(resGet.status).toBe(404);
+    });
+});
+
 describe('Integracion: PATCH /notes/:id (ejercicio 4)', () => {
     let app: any;
 
