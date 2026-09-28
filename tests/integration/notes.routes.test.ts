@@ -71,4 +71,37 @@ describe('Integracion: PATCH /notes/:id (ejercicio 4)', () => {
             });
         expect(resPatch.status).toBe(404);
     })
+
+    describe('Integracion: DELETE /notes/:id (ejercicio 5)', () => {
+    let app: any;
+
+    beforeEach(() => {
+        app = makeApp(':memory:');
+    });
+
+    it('elimina una nota existente y devuelve codigo 204', async () => {
+        const resPost = await request(app)
+            .post('/notes')
+            .send({
+                title: 'Nota a eliminar',
+                content: 'Probando DELETE',
+                pinned: false
+            });
+
+        const notaId = resPost.body.id;
+
+        const resDelete = await request(app).delete(`/notes/${notaId}`);
+
+        expect(resDelete.status).toBe(204);
+
+        const resGet = await request(app).get(`/notes/${notaId}`);
+        expect(resGet.status).toBe(404);
+    });
+
+    it('devuelve codigo 404 si la nota no existe', async () => {
+        const resDelete = await request(app).delete('/notes/999');
+
+        expect(resDelete.status).toBe(404);
+    });
+});
 })
