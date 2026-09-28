@@ -94,7 +94,6 @@ describe('Integracion: PATCH /notes/:id (ejercicio 4)', () => {
 
         expect(resDelete.status).toBe(204);
 
-        // La nota ya no debe existir
         const resGet = await request(app).get(`/notes/${notaId}`);
         expect(resGet.status).toBe(404);
     });
